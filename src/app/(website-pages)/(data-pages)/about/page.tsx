@@ -1,6 +1,6 @@
 import React from 'react'
 import About from '@/components/About'
-function page() {
+function Page() {
   return (
     <div>
       <About/>

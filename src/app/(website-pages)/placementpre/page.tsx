@@ -2,7 +2,7 @@
 import PlacementPre from '@/components/PlacementPre'
 import React from 'react'
 
-function page() {
+function Page() {
   return (
     <div>
      <PlacementPre/>

@@ -59,6 +59,6 @@ export const viewport = {
   themeColor: '#ffffff',
 };
 
-export default function page() {
+export default function Page() {
   return <RoadMap />;
 }

@@ -1,7 +1,7 @@
 import NumericalAbility from '@/components/PlacementTip/NumericalAbility'
 import React from 'react'
 
-function page() {
+function Page() {
   return (
     <div>
       <NumericalAbility/>

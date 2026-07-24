@@ -1,7 +1,7 @@
 import ReasoningAbility from '@/components/PlacementTip/ReasoningAbility'
 import React from 'react'
 
-function page() {
+function Page() {
   return (
     <div>
       <ReasoningAbility/>

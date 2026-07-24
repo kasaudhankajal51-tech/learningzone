@@ -1,7 +1,7 @@
 import AlgorithmsBook from '@/components/PlacementTip/Algorithms'
 import React from 'react'
 
-function page() {
+function Page() {
   return (
     <div>
       <AlgorithmsBook/>

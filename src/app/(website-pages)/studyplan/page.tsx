@@ -1,7 +1,7 @@
 import StudyPlan from '@/components/StudyPlan'
 import React from 'react'
 
-function page() {
+function Page() {
   return (
     <div>
       <StudyPlan/>

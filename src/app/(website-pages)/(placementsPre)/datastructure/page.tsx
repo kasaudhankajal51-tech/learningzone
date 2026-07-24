@@ -1,7 +1,7 @@
 import DataStructuresTip from '@/components/PlacementTip/DataStructuresTip'
 import React from 'react'
 
-function page() {
+function Page() {
   return (
     <div>
       <DataStructuresTip/>

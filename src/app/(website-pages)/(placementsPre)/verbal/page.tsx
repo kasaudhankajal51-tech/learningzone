@@ -1,7 +1,7 @@
 import VerbalAbility from '@/components/PlacementTip/VerbalAbility'
 import React from 'react'
 
-function page() {
+function Page() {
   return (
     <div>
       <VerbalAbility/>

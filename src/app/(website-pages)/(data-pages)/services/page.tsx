@@ -1,6 +1,6 @@
 import React from 'react'
 import Services from '@/components/Services'
-function page() {
+function Page() {
   return (
     <div>
       <Services />

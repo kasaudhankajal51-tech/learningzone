@@ -1,7 +1,7 @@
 import TendingBlog from '@/components/TendingBlog'
 import React from 'react'
 
-function page() {
+function Page() {
   return (
     <div>
       <TendingBlog/>

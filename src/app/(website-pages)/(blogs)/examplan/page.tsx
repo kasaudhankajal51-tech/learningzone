@@ -1,6 +1,6 @@
 import React from 'react'
 import ExamPlan from "@/components/ExamPlan";
-function page() {
+function Page() {
   return (
     <div>
       <ExamPlan/>

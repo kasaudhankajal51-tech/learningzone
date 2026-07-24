@@ -1,6 +1,6 @@
 import React from "react";
 import Signup from "../../../../components/Signup";
-function page() {
+function Page() {
   return (
     <div>
       <Signup />

@@ -1,6 +1,6 @@
 import React from 'react'
 import AllBlogs from '@/components/AllBlogs'
-function page() {
+function Page() {
   return (
     <div>
       <AllBlogs/>

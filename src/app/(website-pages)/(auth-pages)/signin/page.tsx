@@ -1,7 +1,7 @@
 import React from "react";
 import Signin from "@/components/Signin";
 
-function page() {
+function Page() {
   return (
     <div>
      <Signin/>

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
-function page() {
+function Page() {
   const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");

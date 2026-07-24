@@ -1,6 +1,6 @@
 import React from 'react'
 import ChatBox from "@/components/ChatBox"
-function page() {
+function Page() {
   return (
     <div>
       <ChatBox/>
