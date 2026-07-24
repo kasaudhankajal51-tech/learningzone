@@ -81,11 +81,11 @@ export default function BlogHeroSection() {
           {/* Enhanced Hero Heading - Adjusted font sizes for mobile */}
           <h1 className={`text-3xl sm:text-4xl lg:text-6xl xl:text-7xl font-black leading-tight mb-4 md:mb-6 transition-all duration-800 delay-100 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
             <span className="bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 dark:from-blue-400 dark:via-blue-500 dark:to-blue-600 bg-clip-text text-transparent">
-              Your Professional
+              Master the Art of
             </span>
             <br />
             <span className="text-black dark:text-white drop-shadow-lg">
-              Blogging Journey
+              Digital Storytelling
             </span>
           </h1>
 
