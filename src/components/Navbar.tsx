@@ -1,0 +1,518 @@
+"use client";
+import { useState, useEffect, useRef } from "react";
+import { useSession, signOut } from "next-auth/react";
+import Link from "next/link";
+import { Toaster, toast } from "react-hot-toast";
+import { useTheme } from "./ThemeContext";
+import {
+  Moon,
+  Sun,
+  Pencil,
+  ChevronDown,
+  Menu,
+  X,
+  User,
+  LogOut,
+  Home,
+  BookOpen,
+  Video,
+  MessageSquare,
+  BarChart,
+} from "lucide-react";
+
+interface NavItemProps {
+  href: string;
+  theme: string;
+  icon: React.ReactNode;
+  children: React.ReactNode;
+  onClick?: () => void;
+  mobile?: boolean;
+}
+
+const NavItem: React.FC<NavItemProps> = ({
+  href,
+  theme,
+  icon,
+  children,
+  onClick,
+  mobile = false,
+}) => (
+  <li className="list-none">
+    <Link
+      href={href}
+      onClick={onClick}
+      className={`relative flex items-center py-2 px-3 rounded-lg text-sm font-medium transition-all duration-300 group gradient-hover ${
+        theme === "light"
+          ? "text-gray-700 hover:bg-indigo-50 hover:text-indigo-700"
+          : "text-gray-200 hover:bg-indigo-900/20 hover:text-indigo-300"
+      } ${mobile ? "w-full" : ""}`}
+    >
+      <span className="mr-2">{icon}</span>
+      {children}
+    </Link>
+  </li>
+);
+
+const Navbar: React.FC = () => {
+  const { data: session, status } = useSession();
+  const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const [isNavOpen, setNavOpen] = useState(false);
+  const { theme, toggleTheme } = useTheme();
+  const [scrolled, setScrolled] = useState(false);
+  const navRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setDropdownOpen(false);
+      }
+      if (
+        navRef.current &&
+        !navRef.current.contains(event.target as Node) &&
+        !(event.target as Element).closest(".mobile-menu-toggle")
+      ) {
+        setNavOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleSignOut = async () => {
+    toast.success("Signed out successfully", { duration: 2000 });
+    await signOut({ callbackUrl: "/" });
+    localStorage.setItem("isFirstVisit", "true");
+    setNavOpen(false);
+  };
+
+  const ThemeToggleButton = ({ mobile = false }: { mobile?: boolean }) => (
+    <button
+      onClick={toggleTheme}
+      className={`relative flex items-center justify-start ${
+        mobile ? "w-full" : "w-auto"
+      } px-3 py-2 rounded-lg transition-all duration-300 group text-sm font-medium ${
+        theme === "light"
+          ? "text-gray-700 hover:bg-indigo-50 hover:text-indigo-700"
+          : "text-gray-200 hover:bg-indigo-900/20 hover:text-indigo-300"
+      }`}
+      aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+    >
+      <span className="relative w-6 h-6 flex items-center justify-center mr-2">
+        <Moon
+          size={20}
+          className={`absolute transition-opacity duration-300 ${
+            theme === "light" ? "opacity-100" : "opacity-0"
+          }`}
+        />
+        <Sun
+          size={20}
+          className={`absolute transition-opacity duration-300 ${
+            theme === "light" ? "opacity-0" : "opacity-100"
+          }`}
+        />
+      </span>
+      {mobile && <span>{theme === "light" ? "Dark Mode" : "Light Mode"}</span>}
+      {!mobile && (
+        <span
+          className={`absolute top-full mt-2 left-1/2 transform -translate-x-1/2 px-2 py-1 text-xs font-medium rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 ${
+            theme === "light"
+              ? "bg-gray-800 text-white"
+              : "bg-gray-200 text-gray-900"
+          }`}
+        >
+          {theme === "light" ? "Dark Mode" : "Light Mode"}
+        </span>
+      )}
+    </button>
+  );
+
+  return (
+    <>
+      <Toaster position="top-right" />
+      <nav
+        className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b ${
+          theme === "light"
+            ? "bg-white/80 backdrop-blur-md border-gray-100"
+            : "bg-gray-900/80 backdrop-blur-md border-gray-800"
+        } ${scrolled ? "shadow-lg" : "shadow-none"}`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <Link 
+  href="/" 
+  className="flex items-center space-x-3 group transition-all duration-300 hover:scale-105" 
+  onClick={() => setNavOpen(false)}
+>
+  <div className="relative">
+    {/* Glow effect */}
+    <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 via-blue-600 to-purple-600 rounded-full blur-lg opacity-40 group-hover:opacity-70 transition-all duration-500 animate-pulse group-hover:animate-none"></div>
+    
+    {/* Logo container */}
+    <div className="relative">
+      {/* Inner decorative circle */}
+      <div className={`absolute inset-1 rounded-full transition-all duration-500 group-hover:scale-95 ${
+        theme === "dark"
+          ? "bg-gradient-to-br from-indigo-500/20 to-blue-500/20 border border-indigo-400/30"
+          : "bg-gradient-to-br from-blue-500/15 to-indigo-500/15 border border-blue-400/30"
+      }`}></div>
+      
+      <img
+        src="/Blog.png"
+        className={`relative h-12 w-12 rounded-full p-2 transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 ${
+          theme === "dark"
+            ? "bg-gray-900/90 border-2 border-gray-600 group-hover:border-indigo-400 shadow-lg"
+            : "bg-white/95 border-2 border-gray-300 group-hover:border-blue-500 shadow-lg"
+        }`}
+        alt="LearnLive Logo"
+      />
+      
+      {/* Subtle overlay effect */}
+      <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/10 to-transparent rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+    </div>
+  </div>
+
+  {/* Brand text */}
+  <div className="relative overflow-hidden">
+    <span className="text-2xl font-bold tracking-tight">
+      <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent dark:from-indigo-400 dark:to-blue-400 transition-all duration-300">
+        Learn
+      </span>
+      <span className="text-gray-800 dark:text-white ml-0.5 transition-colors duration-300">
+        Live
+      </span>
+    </span>
+    
+    {/* Subtle underline animation */}
+    <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-gradient-to-r from-blue-600 to-indigo-600 group-hover:w-full transition-all duration-500 ease-out"></div>
+  </div>
+</Link>
+
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex items-center space-x-1">
+              <ul className="flex flex-row space-x-1 list-none">
+                <NavItem href="/" theme={theme} icon={<Home size={18} />}>
+                  Home
+                </NavItem>
+                <NavItem
+                  href="/studyplan"
+                  theme={theme}
+                  icon={<BookOpen size={18} />}
+                >
+                  Success Guide
+                </NavItem>
+                <NavItem
+                  href="/roadmap"
+                  theme={theme}
+                  icon={<BookOpen size={18} />}
+                >
+                  Courses
+                </NavItem>
+                <NavItem
+                  href="/create"
+                  theme={theme}
+                  icon={<Pencil size={18} />}
+                >
+                  Write Your Blog
+                </NavItem>
+                <NavItem
+                  href="/placementpre"
+                  theme={theme}
+                  icon={<MessageSquare size={18} />}
+                >
+                  Placement Prep
+                </NavItem>
+                <li className="list-none">
+                  <ThemeToggleButton />
+                </li>
+              </ul>
+            </div>
+
+            <div className="flex items-center space-x-2 md:space-x-4">
+              {status === "authenticated" ? (
+                <div className="relative" ref={dropdownRef}>
+                  <button
+                    onClick={() => setDropdownOpen(!isDropdownOpen)}
+                    className={`flex items-center space-x-2 p-1 md:p-2 rounded-full transition-all duration-300 hover:bg-gradient-to-r hover:from-indigo-500 hover:to-indigo-600 ${
+                      theme === "light" ? "bg-gray-100" : "bg-gray-800"
+                    }`}
+                    aria-expanded={isDropdownOpen}
+                    aria-label="User menu"
+                  >
+                    {session.user?.image ? (
+                      <img
+                        src={session.user?.image}
+                        alt="User photo"
+                        className="w-8 h-8 md:w-9 md:h-9 rounded-full border-2 border-transparent group-hover:border-white transition-all"
+                      />
+                    ) : (
+                      <div
+                        className={`w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center ${
+                          theme === "light" ? "bg-indigo-100" : "bg-indigo-900"
+                        }`}
+                      >
+                        <User
+                          size={16}
+                          className={
+                            theme === "light"
+                              ? "text-indigo-600"
+                              : "text-indigo-300"
+                          }
+                        />
+                      </div>
+                    )}
+                    <ChevronDown
+                      size={16}
+                      className={`hidden md:block transform transition-transform duration-300 ${
+                        isDropdownOpen ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+
+                  {isDropdownOpen && (
+                    <div
+                      className={`absolute right-0 mt-2 w-56 md:w-64 rounded-xl shadow-2xl overflow-hidden transform origin-top-right transition-all duration-300 animate-slide-in ${
+                        theme === "light" ? "bg-white" : "bg-gray-800"
+                      }`}
+                    >
+                      <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+                        <p
+                          className={`font-semibold text-sm md:text-base truncate ${
+                            theme === "light" ? "text-gray-900" : "text-white"
+                          }`}
+                        >
+                          {session.user?.name}
+                        </p>
+                        <p className="text-xs md:text-sm text-gray-500 truncate">
+                          {session.user?.email}
+                        </p>
+                      </div>
+                      <ul className="py-2 list-none">
+                        <li>
+                          <Link
+                            href="/dashboard"
+                            className={`flex items-center px-4 py-2 text-sm font-medium transition-all duration-200 hover:bg-gradient-to-r hover:from-indigo-500 hover:to-indigo-600 hover:text-white ${
+                              theme === "light"
+                                ? "text-gray-700"
+                                : "text-gray-200"
+                            }`}
+                            onClick={() => setDropdownOpen(false)}
+                          >
+                            <BarChart size={16} className="mr-2" />
+                            Dashboard
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            href={`/support`}
+                            className={`flex items-center px-4 py-2 text-sm font-medium transition-all duration-200 hover:bg-gradient-to-r hover:from-indigo-500 hover:to-indigo-600 hover:text-white ${
+                              theme === "light"
+                                ? "text-gray-700"
+                                : "text-gray-200"
+                            }`}
+                            onClick={() => setDropdownOpen(false)}
+                          >
+                            <User size={16} className="mr-2" />
+                            Premium Member
+                          </Link>
+                        </li>
+                        <li>
+                          <button
+                            onClick={handleSignOut}
+                            className={`w-full flex items-center px-4 py-2 text-sm font-medium transition-all duration-200 hover:bg-red-500 hover:text-white ${
+                              theme === "light"
+                                ? "text-gray-700"
+                                : "text-gray-200"
+                            }`}
+                          >
+                            <LogOut size={16} className="mr-2" />
+                            Sign out
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Link
+                  href="/signin"
+                  className={`flex items-center px-3 py-1.5 md:px-4 md:py-2 text-xs md:text-sm font-medium rounded-full bg-gradient-to-r from-indigo-600 to-indigo-700 text-white hover:from-indigo-700 hover:to-indigo-800 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl`}
+                  onClick={() => setNavOpen(false)}
+                >
+                  <User size={14} className="mr-1 md:mr-2" />
+                  <span className="hidden sm:inline">Sign In</span>
+                  <span className="sm:hidden">Login</span>
+                </Link>
+              )}
+
+              <button
+                onClick={() => setNavOpen(!isNavOpen)}
+                className={`lg:hidden p-2 rounded-lg transition-all duration-300 mobile-menu-toggle ${
+                  theme === "light"
+                    ? "text-gray-700 hover:bg-gray-100"
+                    : "text-gray-300 hover:bg-gray-700"
+                }`}
+                aria-label={isNavOpen ? "Close menu" : "Open menu"}
+              >
+                {isNavOpen ? <X size={20} /> : <Menu size={20} />}
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile Navigation */}
+          <div
+            ref={navRef}
+            className={`lg:hidden transition-all duration-300 ease-in-out ${
+              isNavOpen
+                ? "max-h-screen opacity-100 py-2"
+                : "max-h-0 opacity-0 py-0"
+            } overflow-hidden mobile-menu`}
+          >
+            <ul
+              className={`flex flex-col space-y-1 p-2 md:p-4 rounded-xl list-none ${
+                theme === "light"
+                  ? "bg-white shadow-lg"
+                  : "bg-gray-900 shadow-2xl"
+              }`}
+            >
+              <NavItem
+                href="/"
+                theme={theme}
+                icon={<Home size={18} />}
+                onClick={() => setNavOpen(false)}
+                mobile
+              >
+                Home
+              </NavItem>
+              <NavItem
+                href="/studyplan"
+                theme={theme}
+                icon={<BookOpen size={18} />}
+                onClick={() => setNavOpen(false)}
+                mobile
+              >
+                Success Guide
+              </NavItem>
+              <NavItem
+                href="/roadmap"
+                theme={theme}
+                icon={<BookOpen size={18} />}
+                onClick={() => setNavOpen(false)}
+                mobile
+              >
+                Courses
+              </NavItem>
+              <NavItem
+                href="/create"
+                theme={theme}
+                icon={<Pencil size={18} />}
+                onClick={() => setNavOpen(false)}
+                mobile
+              >
+                Write Your Blog
+              </NavItem>
+              <NavItem
+                href="/placementpre"
+                theme={theme}
+                icon={<MessageSquare size={18} />}
+                onClick={() => setNavOpen(false)}
+                mobile
+              >
+                Placement Prep
+              </NavItem>
+              <li className="list-none">
+                <ThemeToggleButton mobile />
+              </li>
+              {status === "authenticated" && (
+                <>
+                  <NavItem
+                    href="/dashboard"
+                    theme={theme}
+                    icon={<BarChart size={18} />}
+                    onClick={() => setNavOpen(false)}
+                    mobile
+                  >
+                    Dashboard
+                  </NavItem>
+                  <NavItem
+                    href={`/profilesection/${session.user?.email}`}
+                    theme={theme}
+                    icon={<User size={18} />}
+                    onClick={() => setNavOpen(false)}
+                    mobile
+                  >
+                    Profile Settings
+                  </NavItem>
+                  <li className="list-none">
+                    <button
+                      onClick={handleSignOut}
+                      className={`relative flex items-center w-full py-2 px-3 rounded-lg text-sm font-medium transition-all duration-300 ${
+                        theme === "light"
+                          ? "text-gray-700 hover:bg-red-50 hover:text-red-600"
+                          : "text-gray-200 hover:bg-red-900/50 hover:text-red-400"
+                      }`}
+                    >
+                      <span className="mr-2">
+                        <LogOut size={18} />
+                      </span>
+                      Sign out
+                    </button>
+                  </li>
+                </>
+              )}
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <style jsx>{`
+        @keyframes slideIn {
+          from {
+            transform: translateY(-10px);
+            opacity: 0;
+          }
+          to {
+            transform: translateY(0);
+            opacity: 1;
+          }
+        }
+        .animate-slide-in {
+          animation: slideIn 0.3s ease-out forwards;
+        }
+        .gradient-hover {
+          position: relative;
+          overflow: hidden;
+        }
+        .gradient-hover::after {
+          content: "";
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: 2px;
+          background: linear-gradient(to right, #0891b2, #0286a3);
+          transform: scaleX(0);
+          transform-origin: right;
+          transition: transform 0.3s ease;
+        }
+        .gradient-hover:hover::after {
+          transform: scaleX(1);
+          transform-origin: left;
+        }
+      `}</style>
+    </>
+  );
+};
+
+export default Navbar;
